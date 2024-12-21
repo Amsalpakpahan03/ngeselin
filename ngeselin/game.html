@@ -78,6 +78,7 @@
         const scoreElement = document.getElementById('score');
         let isJumping = false;
         let score = 0; // Inisialisasi skor
+        let obstacleSpeed = 2; // Kecepatan awal obstacle
 
         // Fungsi untuk memutar suara saat melompat
         function playSound() {
@@ -119,7 +120,7 @@
                         }
                         jumpHeight -= 5;
                         cow.style.bottom = `${jumpHeight}px`;
-                    }, 50);
+                    }, 25);
                 }
                 jumpHeight += 10;
                 cow.style.bottom = `${jumpHeight}px`;
@@ -146,9 +147,18 @@
                 score++; // Increase score
                 scoreElement.innerText = `Score: ${score}`; // Update score on screen
                 obstacle.setAttribute('passed', true); // Mark obstacle as passed
+                increaseObstacleSpeed(); // Tambah kecepatan obstacle
             } else if (obstacleRect.right > cowRect.left) {
                 // Reset obstacle passed attribute if the obstacle is not passed
                 obstacle.removeAttribute('passed');
+            }
+        }
+
+        function increaseObstacleSpeed() {
+            // Setiap skor yang bertambah, percepat kecepatan obstacle
+            if (score % 5 === 0) { // Setiap 5 skor, tingkatkan kecepatan
+                obstacleSpeed = Math.max(0.5, obstacleSpeed - 0.2); // Mengurangi waktu animasi untuk mempercepat
+                obstacle.style.animationDuration = `${obstacleSpeed}s`;
             }
         }
 
